@@ -1,0 +1,17 @@
+# Proper nouns and code-switched terms in ep40. One per line; variants separated by |.
+# Scored as "share of reference occurrences found in the hypothesis".
+WeChat|vechat
+Grab
+Line
+PayPay
+Yahoo
+SoftBank|soft bank
+Humans
+Uzmobile
+Click
+Payme
+Yandex Go
+Kaspi
+GAI|gaiga|gaini
+texpasport|tex pasport
+komu ne len

@@ -1,0 +1,9 @@
+{
+  "source": "Oddiy Podkast (https://t.me/oddiypodcast), public RSS on Spreaker",
+  "clip_seconds": 300,
+  "clips": [
+    {"id": "ep1",  "episode": 1,  "title": "Apple Event, AI, tahrirchi.uz, MNP", "audio_url": "https://api.spreaker.com/download/episode/57489376/oddiy_podcast_1.mp3", "start_sec": 2724, "why": "first episode, worst audio quality"},
+    {"id": "ep40", "episode": 40, "title": "Superapplar, YouTube, Prodakt menejment va dizayn", "audio_url": "https://api.spreaker.com/download/episode/60933916/40.mp3", "start_sec": 1927, "why": "typical episode, heavy code-switching"},
+    {"id": "ep77", "episode": 77, "title": "77-epizod", "audio_url": "https://api.spreaker.com/download/episode/71933977/77.mp3", "start_sec": 2012, "why": "latest episode, best audio"}
+  ]
+}

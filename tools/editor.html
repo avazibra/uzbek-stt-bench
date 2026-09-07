@@ -1,0 +1,50 @@
+<!doctype html>
+<meta charset="utf-8">
+<title>Reference editor</title>
+<style>
+  body{font:15px/1.5 -apple-system,system-ui,sans-serif;margin:0;background:#fafafa;color:#111}
+  header{position:sticky;top:0;background:#fff;border-bottom:1px solid #ddd;padding:10px 16px;display:flex;gap:12px;align-items:center;flex-wrap:wrap}
+  audio{flex:1;min-width:320px}
+  textarea{width:calc(100% - 32px);height:calc(100vh - 140px);margin:16px;font:15px/1.6 ui-monospace,Menlo,monospace;padding:12px;border:1px solid #ccc;border-radius:6px;resize:none}
+  kbd{background:#eee;border:1px solid #ccc;border-radius:4px;padding:0 5px;font-size:12px}
+  small{color:#555}
+  button{padding:6px 10px}
+</style>
+<header>
+  <strong id="clip">ep40</strong>
+  <audio id="a" controls preload="auto"></audio>
+  <label>speed <select id="rate"><option>0.75</option><option selected>1</option><option>1.25</option><option>1.5</option></select></label>
+  <button id="save">Download reference</button>
+  <small><kbd>⌘K</kbd> play/pause · <kbd>⌘J</kbd> −3s · <kbd>⌘L</kbd> +3s · <kbd>⌘I</kbd> insert [MM:SS] · autosaves to this browser</small>
+</header>
+<textarea id="t" spellcheck="false"></textarea>
+<script>
+const clip = new URLSearchParams(location.search).get("clip") || "ep40";
+document.getElementById("clip").textContent = clip;
+const a = document.getElementById("a"), t = document.getElementById("t"), key = "uzbek-stt-bench:" + clip;
+a.src = `../clips/${clip}.mp3`;
+document.getElementById("rate").onchange = e => a.playbackRate = +e.target.value;
+(async () => {
+  const saved = localStorage.getItem(key);
+  if (saved) { t.value = saved; return; }
+  for (const f of [`../reference/${clip}.txt`, `../reference/${clip}.draft.txt`]) {
+    const r = await fetch(f).catch(() => null);
+    if (r && r.ok) { t.value = await r.text(); return; }
+  }
+  t.value = `[00:00] A: `;
+})();
+t.addEventListener("input", () => localStorage.setItem(key, t.value));
+const mmss = s => `${String(Math.floor(s/60)).padStart(2,"0")}:${String(Math.floor(s%60)).padStart(2,"0")}`;
+document.addEventListener("keydown", e => {
+  if (!(e.metaKey || e.ctrlKey)) return;
+  const k = e.key.toLowerCase();
+  if (k === "k") { e.preventDefault(); a.paused ? a.play() : a.pause(); }
+  else if (k === "j") { e.preventDefault(); a.currentTime = Math.max(0, a.currentTime - 3); }
+  else if (k === "l") { e.preventDefault(); a.currentTime += 3; }
+  else if (k === "i") { e.preventDefault(); const s = t.selectionStart, ins = `[${mmss(a.currentTime)}] `; t.setRangeText(ins, s, t.selectionEnd, "end"); t.dispatchEvent(new Event("input")); }
+});
+document.getElementById("save").onclick = () => {
+  const blob = new Blob([t.value], {type: "text/plain"}), u = URL.createObjectURL(blob);
+  Object.assign(document.createElement("a"), {href: u, download: `${clip}.txt`}).click();
+};
+</script>
