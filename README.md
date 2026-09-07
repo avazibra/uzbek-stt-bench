@@ -24,7 +24,7 @@ until a second pass or annotator exists.
 | `tools/editor.html` | Audio + text side by side for producing the reference |
 | `GUIDELINES.md` | Transcription rules. Every scoring dispute is settled there |
 
-Audio is not committed; `make clips` fetches it (needs `ffmpeg`).
+The three clips are committed (about 14 MB). `make clips` re-cuts them from the public episode audio if you want to verify them (needs `ffmpeg`).
 
 ## Run
 
@@ -93,4 +93,4 @@ Add an engine: drop its raw output in `transcripts/<clip>/<engine>.txt`, add a r
 the table above saying how it was run, `make score`. Add a clip: extend `clips.json`,
 produce a reference following `GUIDELINES.md`.
 
-Audio © Oddiy Podkast. Transcripts and code: CC BY 4.0 / MIT (to be confirmed).
+Audio, references and engine outputs: CC BY 4.0 (the podcast is the author's own). Code: MIT. See `LICENSE`.

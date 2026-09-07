@@ -1,6 +1,4 @@
-# audio is fetched by scripts/fetch_clips.py; redistribution rights TBD
-clips/*.mp3
-clips/*.wav
 clips/full/
+clips/*.wav
 __pycache__/
 .DS_Store
