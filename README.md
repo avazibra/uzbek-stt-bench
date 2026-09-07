@@ -1,7 +1,7 @@
 # uzbek-stt-bench
 
 A small, reproducible benchmark of speech-to-text engines on **real conversational
-Uzbek**: two podcast hosts, live talk, Uzbek mixed with Russian and English. Vendors
+Uzbek**: three podcast hosts, live talk, Uzbek mixed with Russian and English. Vendors
 quote numbers on clean read speech (FLEURS); this measures the audio people actually
 have.
 

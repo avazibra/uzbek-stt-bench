@@ -5,8 +5,8 @@ below exists because at least one engine was scored differently depending on it.
 
 ## Format
 
-One speaker turn per line: `[MM:SS] A: text`. `A` is the host who speaks first in
-the clip, `B` the other; use `C` only if a third voice appears. The timestamp is
+One speaker turn per line: `[MM:SS] A: text`. Hosts are labelled `A`, `B`, `C` in
+order of first appearance in the clip (the podcast has three hosts; not all speak in every clip). The timestamp is
 the moment the turn starts, to the nearest second. Short back-channels
 ("ha", "yo'q", "tushunarli") get their own turn if they interrupt the other speaker.
 Lines starting with `#` are comments and are ignored by the scorer.
