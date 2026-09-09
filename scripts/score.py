@@ -23,6 +23,7 @@ from pathlib import Path
 
 ROOT = Path(__file__).resolve().parent.parent
 NORMALIZATION_VERSION = "2026-09-07.2"
+SCORER_VERSION = "2026-09-10.1"  # diarization: exact assignment instead of greedy
 
 TURN = re.compile(r"^\s*\[?(\d{1,2}):(\d{2})(?::(\d{2}))?\]?\s*(?:speaker[_ ]?)?([A-Za-z0-9]{1,2})\s*:\s*", re.I)
 
@@ -116,10 +117,21 @@ def diarization(ref_turns, hyp_turns):
     conf = {}
     for s, lab, n in ref_turns:
         conf[(lab, hyp_label_at(s))] = conf.get((lab, hyp_label_at(s)), 0) + n
-    mapping, used_r, used_h = {}, set(), set()
-    for (r, h), n in sorted(conf.items(), key=lambda kv: -kv[1]):
-        if r not in used_r and h not in used_h:
-            mapping[h] = r; used_r.add(r); used_h.add(h)
+    # Exact maximum-weight one-to-one assignment of hypothesis labels to hosts.
+    # Label counts are tiny, so brute force over permutations is exact and cheap.
+    # (Greedy by largest overlap was wrong: A-X=9, A-Y=8, B-X=8 picked A-X and
+    # stranded B; the optimum is A-Y + B-X.)
+    from itertools import permutations
+    r_labels = sorted({r for r, _ in conf}); h_labels = sorted({h for _, h in conf})
+    best, mapping = -1, {}
+    if len(h_labels) >= len(r_labels):
+        for perm in permutations(h_labels, len(r_labels)):
+            w = sum(conf.get((r, h), 0) for r, h in zip(r_labels, perm))
+            if w > best: best, mapping = w, {h: r for r, h in zip(r_labels, perm)}
+    else:
+        for perm in permutations(r_labels, len(h_labels)):
+            w = sum(conf.get((r, h), 0) for r, h in zip(perm, h_labels))
+            if w > best: best, mapping = w, {h: r for r, h in zip(perm, h_labels)}
     total = sum(n for _, _, n in ref_turns)
     ok = sum(n for (r, h), n in conf.items() if mapping.get(h) == r)
     return ok / total * 100, len({l for _, l, _ in hyp_turns}), len(hyp_turns)
@@ -161,7 +173,7 @@ def score_clip(clip, diff=None):
                 [str(r["S"]), str(r["D"]), str(r["I"]), str(r["n"]), pn, dia, spk]
         md.append("| " + " | ".join(cells) + " |")
     md += ["", "Speaker acc: word-weighted share of reference turns whose start lies in a hypothesis turn of the "
-           "matching speaker (hypothesis labels mapped 1:1 to hosts by best overlap). Spk/turns: distinct speakers "
+           "matching speaker (hypothesis labels mapped 1:1 to hosts by maximum-weight assignment). Spk/turns: distinct speakers "
            f"and turns the engine produced; the reference has {len({l for _, l, _ in ref_turns})}/{len(ref_turns)}."]
     (ROOT / "results").mkdir(exist_ok=True)
     (ROOT / "results" / f"{clip}.md").write_text("\n".join(md) + "\n")

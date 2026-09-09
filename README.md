@@ -63,7 +63,7 @@ make edit      # reference editor at http://localhost:8765/tools/editor.html?cli
 | gemini-3.5-transcribe | 25.8% | 34.9% | 25.9% | 23.0% | 92 | 46 | 5 | 514 | 18/21 | 57% | 3/4 |
 | uzbekvoice | 28.1% | 42.9% | 25.2% | 27.4% | 114 | 26 | 16 | 545 | 13/21 | — | — |
 
-Speaker acc: word-weighted share of reference turns whose start lies in a hypothesis turn of the matching speaker (hypothesis labels mapped 1:1 to hosts by best overlap). Spk/turns: distinct speakers and turns the engine produced; the reference has 3/21.
+Speaker acc: word-weighted share of reference turns whose start lies in a hypothesis turn of the matching speaker (hypothesis labels mapped 1:1 to hosts by maximum-weight assignment). Spk/turns: distinct speakers and turns the engine produced; the reference has 3/21.
 <!-- results:end -->
 
 WER is computed after normalization (`NORMALIZATION_VERSION` in `scripts/score.py`):
