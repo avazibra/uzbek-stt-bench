@@ -42,6 +42,7 @@ make edit      # reference editor at http://localhost:8765/tools/editor.html?cli
 | gemini-3.5-transcribe | AI Studio, defaults (speaker labels + word timestamps on, language Detect) |
 | gemini-3.5-transcribe-smart | Same, "Smart transcription" on (disables speakers/timestamps) |
 | elevenlabs-scribe | API, `scribe_v1`, language `uzb` |
+| elevenlabs-scribe-v2 | Scribe v2, ElevenLabs web app, language `uzb`, segmented JSON export (2026-09-30) |
 | muxlisa | muxlisa.uz web upload, `.docx` export |
 | uzbekvoice | uzbekvoice.ai web upload, `.docx` export (timestamps stripped) |
 | ovoz-ai | Ovoz AI Telegram bot |
@@ -55,6 +56,7 @@ make edit      # reference editor at http://localhost:8765/tools/editor.html?cli
 | Engine | WER | WER A | WER B | WER C | Sub | Del | Ins | Words | Proper nouns | Speaker acc | Spk/turns |
 |---|---|---|---|---|---|---|---|---|---|---|---|
 | gemini-3-flash | 15.3% | 27.0% | 13.2% | 14.6% | 51 | 27 | 7 | 535 | 20/21 | — | — |
+| elevenlabs-scribe-v2 | 19.8% | 46.0% | 17.3% | 15.5% | 71 | 33 | 6 | 528 | 17/21 | 88% | 2/5 |
 | neuronai | 21.4% | 30.2% | 22.6% | 17.7% | 75 | 33 | 11 | 533 | 15/21 | — | — |
 | muxlisa | 22.2% | 22.2% | 25.2% | 18.6% | 90 | 22 | 11 | 544 | 15/21 | — | — |
 | ovoz-ai | 23.4% | 42.9% | 20.3% | 21.7% | 68 | 57 | 5 | 503 | 21/21 | — | — |
